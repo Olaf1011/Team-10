@@ -4,18 +4,17 @@ using UnityEngine;
 
 public class boxCollider : MonoBehaviour
 {
-    public float atckRange = .5f, atckWitdh = .5f;
+
+   
+    public float atckRange = .5f, atckWitdh = .5f;      //The size of the hitbox
     // Start is called before the first frame update
     void Start()
     {
-        this.gameObject.SetActive(false);
-        GetComponent<BoxCollider2D>().size = new Vector2(atckWitdh, atckRange);
     }
 
     // Update is called once per frame
     void Update()
     {
-
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {

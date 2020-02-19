@@ -60,14 +60,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\boxCollider.cs" />
-    <Compile Include="Assets\Scripts\EnemyMotion.cs" />
-    <Compile Include="Assets\Scripts\EnemyShoot.cs" />
-    <Compile Include="Assets\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Scripts\AI\EnemyMotion.cs" />
+    <Compile Include="Assets\Scripts\AI\EnemyShoot.cs" />
     <Compile Include="Assets\Scripts\Laser.cs" />
-    <Compile Include="Assets\Scripts\Melee.cs" />
-    <Compile Include="Assets\Scripts\Score.cs" />
-    <Compile Include="Assets\Scripts\ShipControl.cs" />
+    <Compile Include="Assets\Scripts\Manager\DontDestroy.cs" />
+    <Compile Include="Assets\Scripts\Manager\GameManager.cs" />
+    <Compile Include="Assets\Scripts\Manager\Score.cs" />
+    <Compile Include="Assets\Scripts\Player\boxCollider.cs" />
+    <Compile Include="Assets\Scripts\Player\Melee.cs" />
+    <Compile Include="Assets\Scripts\Player\ShipControl.cs" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>C:/Users/orola/Downloads/SpaceInvaders_V3/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>

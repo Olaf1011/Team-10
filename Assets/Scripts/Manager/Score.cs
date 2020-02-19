@@ -25,6 +25,6 @@ public class Score : MonoBehaviour {
     }
     void LateUpdate()
     {
-        scoreText.text = "Score: " + score;
+        //scoreText.text = "Score: " + score;
     }
 }

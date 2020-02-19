@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         if (loseScreen)
-        {%
+        {
             loseScreen.SetActive(true);
         }
         if (playerWon)

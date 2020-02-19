@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Melee : MonoBehaviour
 {
-    public float colliderDespawnDelay = 0.5f;               //Delay for destroying the hitbox gameObject (Aslong as it's in the game it will detect enemies in it)
-    public float spawnDistance = 1;                         //The distance the box spawns away from the player.
-    public GameObject meleeBox;
+    [SerializeField] private float colliderDespawnDelay = 0.5f;               //Delay for destroying the hitbox gameObject (Aslong as it's in the game it will detect enemies in it)
+    [SerializeField] private float spawnDistance = 0.7f;                         //The distance the box spawns away from the player.
+    [SerializeField] private GameObject meleeBox;
     
 
     //Struct with everything to do with the hitbox location spawning
-    public struct HitBox                           
+    struct HitBox                           
     {
         public static Vector3 playerPos , playerDirection, spawnPos;
         public static Quaternion playerRotation;
@@ -24,12 +24,13 @@ public class Melee : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E) && GameManager.gameState == GameManager.GameState.WELCOME)  //Checks if the button was pressed and if the game is playing
+        if (Input.GetButtonDown("Fire1") && GameManager.gameState == GameManager.GameState.PLAYING)  //Checks if the button was pressed and if the game is playing
         {
             attack();
         }
     }
-    private void attack()
+
+    void attack()
     {
         setLocation();                                                                      //Runs the calculation to place the hitBox in front of the player no matter rotation
         StartCoroutine(ColliderDespawnDelay());                                             //Keeps the box there for set amount of time so it always hits enemy's for set time

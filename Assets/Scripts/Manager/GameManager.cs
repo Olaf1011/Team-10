@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public GameObject loseScreen, winScreen;
+    [SerializeField] private Button m_startButton;
+    [SerializeField] private GameObject loseScreen, winScreen;
+
     static private GameManager instance = null;
+
     static bool isPlayerDead, playerWon;
 
     public enum GameState
@@ -19,15 +23,18 @@ public class GameManager : MonoBehaviour
 
     public static GameState gameState;
 
+
     void Awake()
     {
         gameState = GameState.WELCOME;
         Debug.Assert(instance == null);
         instance = this;
     }
+
     // Start is called before the first frame update
     void Start()
     {
+        m_startButton.onClick.AddListener(TaskOnClick);
         loseScreen.SetActive(false);
         winScreen.SetActive(false);
     }
@@ -36,7 +43,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         if (loseScreen)
-        {
+        {%
             loseScreen.SetActive(true);
         }
         if (playerWon)
@@ -56,5 +63,10 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1;
         SceneManager.LoadScene(0);
+    }
+    void TaskOnClick()
+    {
+        SceneManager.LoadScene("Game"); //Switches scene to the game scene
+        gameState = GameState.PLAYING;  //Sets the gameState to playing so all the correct scripts run.
     }
 }

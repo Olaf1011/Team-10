@@ -4,17 +4,22 @@ using UnityEngine;
 
 public class boxCollider : MonoBehaviour
 {
+    private bool firstFire = true;
 
-    [SerializeField] private float atckRange = .5f, atckWitdh = .5f;      //The size of the hitbox
+
     // Start is called before the first frame update
     void Start()
     {
-        GetComponent<BoxCollider2D>().size = new Vector2(atckWitdh, atckRange); //Sets size of the hitbox
+        GetComponent<BoxCollider2D>().size = new Vector2(Melee.atckWitdh, Melee.atckRange); //Sets size of the hitbox
     }
 
     // Update is called once per frame
     void Update()
-    {   
+    {
+        if (firstFire)
+        {
+            StartCoroutine(ColliderDespawnDelay());
+        }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -22,5 +27,11 @@ public class boxCollider : MonoBehaviour
         {
             Debug.Log("Hit3");
         }
+    }
+    IEnumerator ColliderDespawnDelay()
+    {
+        firstFire = false;
+        yield return new WaitForSeconds(Melee.colliderDespawnDelay);                              //Waits for a set time before destorying it. The detroy happens after the delay. The return happends the moment it hits the line of code.
+        Destroy(gameObject);
     }
 }

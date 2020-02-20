@@ -8,6 +8,7 @@ public class ShipControl : MonoBehaviour
 
     private Rigidbody2D _rb;
     private Vector2 movement;
+    private Vector2 stopMovement = Vector2.zero;
 
     // Start is called before the first frame update
     void Start()
@@ -21,12 +22,14 @@ public class ShipControl : MonoBehaviour
     {
         switch (GameManager.gameState)
         {
-            
             case GameManager.GameState.PLAYING: //Change to playing in the future
                 //calling the functions
                 getMouse();
                 getInputs();
                 Move();
+                break;
+            case GameManager.GameState.PAUSED:
+                _rb.velocity = stopMovement;
                 break;
             default:
                 break;

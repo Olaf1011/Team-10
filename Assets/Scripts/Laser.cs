@@ -8,6 +8,7 @@ public class Laser : MonoBehaviour {
     public string[] ignoreTags;
     public GameObject explosion;
 
+
     private Rigidbody2D _rb;
     private bool okToFire = false;
 

@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     {
         WELCOME,
         MENU,
+        PAUSED,
         PLAYING,
         GAME_OVER
     }
@@ -42,13 +43,19 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (loseScreen)
-        {
-            loseScreen.SetActive(true);
-        }
-        if (playerWon)
-        {
-            winScreen.SetActive(true);
+        switch (gameState) {
+            case GameState.PLAYING:
+                if (Input.GetKeyDown(KeyCode.Escape))
+                {
+                    gameState = GameState.PAUSED; 
+                }
+                break;
+            case GameState.PAUSED:
+                if (Input.GetKeyDown(KeyCode.Escape))
+                {
+                    gameState = GameState.PLAYING;
+                }
+                break;
         }
     }
     public static void PlayerDied()

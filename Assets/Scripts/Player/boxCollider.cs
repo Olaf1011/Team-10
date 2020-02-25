@@ -25,7 +25,8 @@ public class boxCollider : MonoBehaviour
     {
         if (collision.tag == "Enemy")
         {
-            Debug.Log("Hit3");
+            combo();
+            Debug.Log("Hit"); 
         }
     }
     IEnumerator ColliderDespawnDelay()
@@ -33,5 +34,12 @@ public class boxCollider : MonoBehaviour
         firstFire = false;
         yield return new WaitForSeconds(Melee.colliderDespawnDelay);                              //Waits for a set time before destorying it. The detroy happens after the delay. The return happends the moment it hits the line of code.
         Destroy(gameObject);
+    }
+
+    void combo()
+    {
+        GameObject go = GameObject.Find("Player");
+        Combo combo = (Combo)go.GetComponent(typeof(Combo));
+        combo.IncreaseScore();
     }
 }

@@ -8,6 +8,7 @@ public class Laser : MonoBehaviour {
     public string[] ignoreTags;
     public GameObject explosion;
 
+    Combo combo;
 
     private Rigidbody2D _rb;
     private bool okToFire = false;
@@ -36,7 +37,7 @@ public class Laser : MonoBehaviour {
         Destroy(gameObject);
         if ( other.tag == "Enemy")
         {
-            Score.IncreaseScore();
+            combo.IncreaseScore();
         }
 
     }

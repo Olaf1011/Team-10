@@ -43,7 +43,7 @@ public class Melee : MonoBehaviour
 
     void setLocation()
     {
-        spawnDistance = (GetComponent<CircleCollider2D>().radius) + atckRange / 2; //Runs the calculation to place the hitBox in front of the player no matter rotation
+        spawnDistance = (GetComponent<CircleCollider2D>().radius) + atckRange / 2;          //Runs the calculation to place the hitBox in front of the player no matter rotation
         HitBox.playerPos = this.transform.position;                                         
         HitBox.playerDirection = this.transform.up;                                         //Takes what is up (Forward) compared to Players rotation. This will make it so we can place the box in front of the player
         HitBox.playerRotation = this.transform.rotation;                                    

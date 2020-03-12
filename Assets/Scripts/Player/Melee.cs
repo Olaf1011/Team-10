@@ -10,6 +10,8 @@ public class Melee : MonoBehaviour
     public static float colliderDespawnDelay = 0.1f;                        //Delay for destroying the hitbox gameObject (Aslong as it's in the game it will detect enemies in it)
     [SerializeField] private float spawnDistance;                          //The distance the box spawns away from the player.
 
+    private Animator animMan;
+
     //Struct with everything to do with the hitbox location spawning
     struct HitBox                           
     {
@@ -19,7 +21,7 @@ public class Melee : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        animMan = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -36,6 +38,7 @@ public class Melee : MonoBehaviour
     void attack()
     {
         if (Input.GetButtonDown("Fire1")){
+            animMan.Play("GoblinSwing");
             setLocation();      
             GameObject hit = Instantiate(meleeBox, HitBox.spawnPos, HitBox.playerRotation);     //Keeps the box there for set amount of time so it always hits enemy's for set 
         }
@@ -43,7 +46,7 @@ public class Melee : MonoBehaviour
 
     void setLocation()
     {
-        spawnDistance = (GetComponent<CircleCollider2D>().radius) + atckRange / 2; //Runs the calculation to place the hitBox in front of the player no matter rotation
+        spawnDistance = (GetComponent<CircleCollider2D>().radius) + atckRange / 2;          //Runs the calculation to place the hitBox in front of the player no matter rotation
         HitBox.playerPos = this.transform.position;                                         
         HitBox.playerDirection = this.transform.up;                                         //Takes what is up (Forward) compared to Players rotation. This will make it so we can place the box in front of the player
         HitBox.playerRotation = this.transform.rotation;                                    

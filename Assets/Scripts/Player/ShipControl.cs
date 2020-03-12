@@ -15,6 +15,7 @@ public class ShipControl : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
         Debug.Assert(_rb);
+
     }
 
     // Update is called once per frame

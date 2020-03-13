@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
         GAME_OVER   //Player died [Fill in more]
     }
     public static GameState gameState;
+    [SerializeField] private GameState startState = GameState.MENU;
+
 
     //Tells everything in the game when the game is "PLAYING" what the room state is in
     public enum RoomState
@@ -31,6 +33,7 @@ public class GameManager : MonoBehaviour
         CLEARED     //The room is clear and no more enemy's start spawning. Things like the combo meter are now paused.
     }
     public static RoomState roomState;
+    [SerializeField] private RoomState startRoomState = RoomState.FIGHTING;
 
 
     void Awake()
@@ -39,16 +42,13 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
 
         instance = this;
-
-        roomState = RoomState.FIGHTING;
-        gameState = GameState.WELCOME;
-
+        roomState = startRoomState;
+        gameState = startState;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        m_startButton.onClick.AddListener(TaskOnClick);
     }
 
     // Update is called once per frame
@@ -82,7 +82,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
         SceneManager.LoadScene(0);
     }
-    void TaskOnClick()
+    public void TaskOnClick()
     {
         SceneManager.LoadScene("Game"); //Switches scene to the game scene
         gameState = GameState.PLAYING;  //Sets the gameState to playing so all the correct scripts run.

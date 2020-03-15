@@ -6,14 +6,19 @@ public class EnemySystem : MonoBehaviour
 {
     [SerializeField] private Transform player;
     [SerializeField] private GameObject hitbox;
+    [SerializeField] private GameObject laser;
 
     [SerializeField] float speed = 250;
     [SerializeField] float rotSpeed = 6;
     [SerializeField] float stoppingDistance = 1;
 
+    [SerializeField] bool rangedEnemy = false;
+
+    private bool shooting = false;
+
     private Rigidbody2D _rb;
 
-    enum enemyState { CHASING, ATTACKING };
+    enum enemyState { CHASING, ATTACKING, RANGED_ATTACK };
     private enemyState state = enemyState.CHASING;
 
     // Start is called before the first frame update
@@ -44,6 +49,15 @@ public class EnemySystem : MonoBehaviour
                 if (dist > stoppingDistance)
                     state = enemyState.CHASING;
                 break;
+            case enemyState.RANGED_ATTACK:
+                _rb.velocity = Vector3.zero;
+
+                if (!shooting)
+                    StartCoroutine(fireLaser());
+
+                if (dist > (stoppingDistance + 5))
+                    state = enemyState.CHASING;
+                break;
         }
 
     }
@@ -72,6 +86,10 @@ public class EnemySystem : MonoBehaviour
     {
         if (dist < stoppingDistance)
             state = enemyState.ATTACKING;
+
+        if ((dist < (stoppingDistance + 5)) && rangedEnemy)
+            state = enemyState.RANGED_ATTACK;
+
         else
             state = enemyState.CHASING;
     }
@@ -79,5 +97,16 @@ public class EnemySystem : MonoBehaviour
     void spawnHitbox()
     {
         Instantiate(hitbox, transform.position, transform.rotation);
+    }
+
+    IEnumerator fireLaser()
+    {
+        Instantiate(laser, transform.position, transform.rotation);
+
+        shooting = true;
+
+        yield return new WaitForSeconds(5);
+
+        shooting = false;
     }
 }

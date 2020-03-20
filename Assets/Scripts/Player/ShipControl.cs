@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ShipControl : MonoBehaviour
 {
-    [SerializeField] private float speed = 500;
+    [SerializeField] public float speed = 500;
 
     private Rigidbody2D _rb;
     private Vector2 movement;

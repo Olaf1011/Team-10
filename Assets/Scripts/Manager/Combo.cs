@@ -49,7 +49,6 @@ public class Combo : MonoBehaviour {
                 combo--;
                 decreaseComboCounter = Attributes.MAX_COUNTER;
             }
-            Debug.Log(decreaseComboCounter);
             comboMeter.rectTransform.sizeDelta = new Vector2(decreaseComboCounter, 20);
             byte colour = (byte)(decreaseComboCounter * 255 / 100);
             byte red = (byte)(255 - colour);

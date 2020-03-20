@@ -5,6 +5,7 @@ using UnityEngine;
 public class PerkManager : MonoBehaviour
 {
     private ShipControl playerScript;
+    private Combo comboScript;
 
     public enum PerkType
     {
@@ -17,15 +18,24 @@ public class PerkManager : MonoBehaviour
     {
         activePerks = new HashSet<PerkType>();
         playerScript = GetComponent<ShipControl>();
-        activePerks.Add(PerkType.IncreaseMoveSpeed);
-        if (activePerks.Contains(PerkType.IncreaseMoveSpeed))
-        {
-            playerScript.speed = playerScript.speed * 5;
-        }
+        comboScript = GetComponent<Combo>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void AddPerk(PerkType perk)
     {
+        activePerks.Add(perk);
+        RefreshPerks();
+    }
+
+    public void RefreshPerks()
+    {
+        if (activePerks.Contains(PerkType.IncreaseMoveSpeed))
+        {
+            playerScript.speed = playerScript.defaultSpeed * 5;
+        }
+        if (activePerks.Contains(PerkType.SlowCombo))
+        {
+            comboScript.TIME_MULTIPER = comboScript.TIME_MULTIPER_DEFAULT / 2;
+        }
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class ShipControl : MonoBehaviour
 {
     [SerializeField] public float speed = 500;
+    public float defaultSpeed;
 
     private Rigidbody2D _rb;
     private Vector2 movement;
@@ -13,9 +14,9 @@ public class ShipControl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        defaultSpeed = speed;
         _rb = GetComponent<Rigidbody2D>();
         Debug.Assert(_rb);
-
     }
 
     // Update is called once per frame

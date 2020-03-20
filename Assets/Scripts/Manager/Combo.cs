@@ -11,17 +11,16 @@ public class Combo : MonoBehaviour {
     [SerializeField] private Text comboText;
     [SerializeField] private Image comboMeter;
 
+    public float MAX_COUNTER = 100;
+    public int TIME_MULTIPER = 2;
+    public int TIME_MULTIPER_DEFAULT;
 
-    private struct Attributes
+    // Use this for initialization
+    void Start () 
     {
-        public const float MAX_COUNTER = 100;
-        public const int TIME_MULTIPER = 2;
-    }
-
-	// Use this for initialization
-	void Start () {
+        TIME_MULTIPER_DEFAULT = TIME_MULTIPER;
         combo = 0;
-        decreaseComboCounter = Attributes.MAX_COUNTER;
+        decreaseComboCounter = MAX_COUNTER;
     }
 	
 	// Update is called once per frame
@@ -43,11 +42,11 @@ public class Combo : MonoBehaviour {
     {
         if(combo > 0)
         {
-            decreaseComboCounter -= (combo * (Time.deltaTime * Attributes.TIME_MULTIPER));
+            decreaseComboCounter -= (combo * (Time.deltaTime * TIME_MULTIPER));
             if(decreaseComboCounter <= 0)
             {
                 combo--;
-                decreaseComboCounter = Attributes.MAX_COUNTER;
+                decreaseComboCounter = MAX_COUNTER;
             }
             comboMeter.rectTransform.sizeDelta = new Vector2(decreaseComboCounter, 20);
             byte colour = (byte)(decreaseComboCounter * 255 / 100);

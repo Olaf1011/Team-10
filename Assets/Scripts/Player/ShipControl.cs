@@ -25,11 +25,14 @@ public class ShipControl : MonoBehaviour
 
     PlayerState playerState = PlayerState.WALKING;
 
+    Melee melee;
+
     // Start is called before the first frame update
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
         Debug.Assert(_rb);
+        melee = GameObject.Find("Player").GetComponent<Melee>();
     }
 
     // Update is called once per frame
@@ -40,6 +43,7 @@ public class ShipControl : MonoBehaviour
             case GameManager.GameState.PLAYING: //Change to playing in the future
                 //calling the functions
                 Movement();
+                melee.Attacking();
                 break;
             case GameManager.GameState.PAUSED:
                 _rb.velocity = stopMovement;

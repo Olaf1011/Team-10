@@ -18,8 +18,28 @@ public class Combo : MonoBehaviour {
         public const int TIME_MULTIPER = 2;
     }
 
-	// Use this for initialization
-	void Start () {
+    static private Combo instance = null;
+
+    // Lets other scripts find the instane of the game manager
+    public static Combo Instance
+    {
+        get
+        {
+            return instance;
+        }
+    }
+
+    // Ensure there is only one instance of this object in the game
+    void Awake()
+    {
+        if (instance != null)
+            Destroy(gameObject);
+
+        instance = this;
+    }
+
+    // Use this for initialization
+    void Start () {
         combo = 0;
         decreaseComboCounter = Attributes.MAX_COUNTER;
     }
@@ -49,7 +69,6 @@ public class Combo : MonoBehaviour {
                 combo--;
                 decreaseComboCounter = Attributes.MAX_COUNTER;
             }
-            Debug.Log(decreaseComboCounter);
             comboMeter.rectTransform.sizeDelta = new Vector2(decreaseComboCounter, 20);
             byte colour = (byte)(decreaseComboCounter * 255 / 100);
             byte red = (byte)(255 - colour);

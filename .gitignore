@@ -1,23 +1,7 @@
 Library/
 /Temp
-/ProjectSettings
 /Packages
 /obj/Debug
 /Logs
-/Assets/Prefabs
-/Assets/Music
-/Assets/Materials
-/Assets/Anims
-/Assets/_Scenes.meta
-/Assets/_Scenes
-/Assets/Textures.meta
-/Assets/Textures
-/Assets/Sfx.meta
-/Assets/Sfx
-/Assets/Scripts.meta
-/Assets/Prefabs.meta
-/Assets/Music.meta
-/Assets/Materials.meta
-/Assets/Anims.meta
 /.vs
 

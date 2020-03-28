@@ -8,19 +8,7 @@ public class EnemySystem : MonoBehaviour
     [SerializeField] private GameObject hitbox;
     [SerializeField] private GameObject laser;
 
-    [SerializeField] float speed = 250;
-    [SerializeField] float rotSpeed = 6;
-    [SerializeField] float stoppingDistance = 1;
-
-    [SerializeField] bool rangedEnemy = false;
-
-    private bool shooting = false;
-
     private Rigidbody2D _rb;
-
-    enum enemyState { CHASING, ATTACKING, RANGED_ATTACK };
-    private enemyState state = enemyState.CHASING;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -31,36 +19,17 @@ public class EnemySystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float dist = Vector3.Distance(player.position, transform.position);
-
         LookAtPlayer();
+        StateMachine();
         DistCheck(dist);
-
-        switch (state)
-        {
-            case enemyState.CHASING:
-                Move();
-                break;
-            case enemyState.ATTACKING:
-                _rb.velocity = Vector3.zero;
-
-                spawnHitbox();
-
-                if (dist > stoppingDistance)
-                    state = enemyState.CHASING;
-                break;
-            case enemyState.RANGED_ATTACK:
-                _rb.velocity = Vector3.zero;
-
-                if (!shooting)
-                    StartCoroutine(fireLaser());
-
-                if (dist > (stoppingDistance + 5))
-                    state = enemyState.CHASING;
-                break;
-        }
-
     }
+
+
+    //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- Enemy movement code -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+    [SerializeField] float speed = 250;
+    [SerializeField] float rotSpeed = 6;
+    [SerializeField] float stoppingDistance = 1;
 
     void LookAtPlayer()
     {
@@ -80,33 +49,118 @@ public class EnemySystem : MonoBehaviour
         //moving the character by adding velocity
         _rb.velocity = -transform.up * speed * Time.deltaTime;
     }
+    //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+    //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- Distance checker -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+    [SerializeField] bool rangedEnemy = false;
+    [SerializeField] bool enemyCharger = false;
+    float dist;
 
     //Distance check between enemy and player
     void DistCheck(float dist)
     {
+        dist = Vector3.Distance(player.position, transform.position);
+
+        // ----- if else statements for enemy behaviour -----
         if (dist < stoppingDistance)
             state = enemyState.ATTACKING;
 
-        if ((dist < (stoppingDistance + 5)) && rangedEnemy)
+        else if ((dist < (stoppingDistance + 5)) && enemyCharger)
+            state = enemyState.CHARGE;
+
+        else if ((dist < (stoppingDistance + 5)) && rangedEnemy)
             state = enemyState.RANGED_ATTACK;
 
         else
             state = enemyState.CHASING;
+        // --------------------
     }
+    //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
-    void spawnHitbox()
+
+    //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- The StateMachine and its variables -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+    enum enemyState { CHASING, ATTACKING, RANGED_ATTACK, CHARGE };
+    private enemyState state = enemyState.CHASING;
+
+    void StateMachine()
+    {
+        switch (state)
+        {
+            case enemyState.CHASING:
+                Move();
+                break;
+            case enemyState.ATTACKING:
+                _rb.velocity = Vector3.zero;
+
+                if (!attacking)
+                    StartCoroutine(SpawnHitbox());
+
+                if (dist > stoppingDistance)
+                    state = enemyState.CHASING;
+                break;
+            case enemyState.RANGED_ATTACK:
+                _rb.velocity = Vector3.zero;
+
+                if (!attacking)
+                    StartCoroutine(FireLaser());
+
+                if (dist > (stoppingDistance + 5))
+                    state = enemyState.CHASING;
+                break;
+            case enemyState.CHARGE:
+                if (!charging)
+                    StartCoroutine(Charge());
+                break;
+        }
+    }
+    //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+    //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- The IEnumerators -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+    private bool attacking = false;
+    private bool charging = false;
+
+    IEnumerator SpawnHitbox()
     {
         Instantiate(hitbox, transform.position, transform.rotation);
+
+        attacking = true;
+
+        yield return new WaitForSeconds(2);
+
+        attacking = false;
     }
 
-    IEnumerator fireLaser()
+    IEnumerator FireLaser()
     {
         Instantiate(laser, transform.position, transform.rotation);
 
-        shooting = true;
+        attacking = true;
 
         yield return new WaitForSeconds(5);
 
-        shooting = false;
+        attacking = false;
     }
+
+    IEnumerator Charge()
+    {
+        _rb.velocity = Vector3.zero;
+
+        yield return new WaitForSeconds(1);
+
+        charging = true;
+
+        Vector3 chargeDir = player.position - transform.position;
+
+        _rb.velocity = chargeDir * (speed * 1.1f) * Time.deltaTime;
+
+        yield return new WaitForSeconds(5);
+
+        charging = false;
+    }
+    //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 }
